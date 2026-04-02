@@ -786,8 +786,8 @@ async function submitReply() {
     authorType = 'anon';
   }
 
-  const postId = parseInt(document.getElementById('reply-target-id').value);
-  const post   = boardPosts.find(p => p.id === postId);
+  const postId = document.getElementById('reply-target-id').value;
+  const post   = boardPosts.find(p => String(p.id) === String(postId));
   if (!post) return;
   const replies = [...(post.replies||[]), {id:Date.now()+'', author:{type:authorType,name:authorName}, content, createdAt:fmtDate()}];
   await sb.from('board').update({replies}).eq('id', postId);
@@ -795,7 +795,7 @@ async function submitReply() {
 }
 
 async function toggleLike(postId) {
-  const post = boardPosts.find(p => p.id === postId);
+  const post = boardPosts.find(p => String(p.id) === String(postId));
   if (!post) return;
   const key = 'like_'+postId;
   const uid = sessionStorage.getItem(key);
@@ -809,7 +809,7 @@ async function deletePost(id) {
   await sb.from('board').delete().eq('id', id);
 }
 async function deleteReply(postId, replyId) {
-  const post = boardPosts.find(p => p.id === postId);
+  const post = boardPosts.find(p => String(p.id) === String(postId));
   if (!post) return;
   const replies = (post.replies||[]).filter(r => r.id !== replyId);
   await sb.from('board').update({replies}).eq('id', postId);
@@ -831,7 +831,7 @@ function renderBoard() {
       <div class="reply-item">
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <span class="reply-author-chip ${r.author?.type==='named'?'reply-chip-named':'reply-chip-anon'}">↳ ${r.author?.name||'익명'}</span>
-          ${isAdmin?`<button class="del-btn-sm" onclick="deleteReply(${p.id},'${r.id}')">🗑</button>`:''}
+          ${isAdmin?`<button class="del-btn-sm" onclick="deleteReply('${p.id}','${r.id}')">🗑</button>`:''}
         </div>
         <div class="reply-body">${esc(r.content)}</div>
         <div class="reply-time">${r.createdAt||''}</div>
@@ -843,9 +843,9 @@ function renderBoard() {
       </div>
       <div class="post-body">${esc(p.content)}</div>
       <div class="post-footer">
-        <button class="like-btn${liked?' liked':''}" onclick="toggleLike(${p.id})">❤️ ${likeCount}</button>
-        <button class="reply-open-btn" onclick="openReplyModal(${p.id})">💬 댓글 ${(p.replies||[]).length}</button>
-        ${isAdmin?`<button class="del-btn-sm" onclick="deletePost(${p.id})">🗑 삭제</button>`:''}
+        <button class="like-btn${liked?' liked':''}" onclick="toggleLike('${p.id}')">❤️ ${likeCount}</button>
+        <button class="reply-open-btn" onclick="openReplyModal('${p.id}')">💬 댓글 ${(p.replies||[]).length}</button>
+        ${isAdmin?`<button class="del-btn-sm" onclick="deletePost('${p.id}')">🗑 삭제</button>`:''}
       </div>
       ${replies?`<div class="replies-wrap">${replies}</div>`:''}
     </div>`;
