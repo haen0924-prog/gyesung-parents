@@ -37,20 +37,6 @@
   @keyframes spin{to{transform:rotate(360deg);}}
   .loading-err{color:#ffe082;font-size:16px;font-weight:700;text-align:center;padding:0 24px;line-height:1.6;}
 
-  /* ── 로그인 ── */
-  .login-screen{position:fixed;inset:0;background:var(--primary);z-index:998;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;}
-  .login-screen.hidden{display:none;}
-  .login-logo{width:80px;height:80px;background:#fff;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:20px;}
-  .login-school{color:#fff;font-size:24px;font-weight:900;margin-bottom:6px;}
-  .login-sub{color:rgba(255,255,255,.8);font-size:16px;margin-bottom:36px;}
-  .login-box{background:#fff;border-radius:24px;padding:28px 24px;width:100%;max-width:400px;}
-  .login-box h2{font-size:20px;font-weight:900;color:var(--primary);margin-bottom:6px;}
-  .login-box p{font-size:16px;color:var(--text-sub);margin-bottom:20px;line-height:1.5;}
-  .login-input{width:100%;padding:16px;border:2px solid var(--border);border-radius:14px;font-family:inherit;font-size:20px;color:var(--text);background:var(--bg);margin-bottom:14px;-webkit-appearance:none;}
-  .login-input:focus{outline:none;border-color:var(--primary);background:#fff;}
-  .login-btn{width:100%;padding:16px;background:var(--primary);color:#fff;border:none;border-radius:14px;font-family:inherit;font-size:20px;font-weight:700;cursor:pointer;}
-  .login-err-msg{color:var(--red);font-size:15px;font-weight:700;margin-bottom:10px;display:none;}
-
   /* ── HEADER ── */
   .app-header{background:var(--primary);color:#fff;padding:16px 20px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15);}
   .header-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
@@ -58,7 +44,6 @@
   .school-title h1{font-size:20px;font-weight:900;line-height:1.2;}
   .school-title p{font-size:13px;opacity:.85;margin-top:1px;}
   .header-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0;}
-  .user-chip{background:rgba(255,255,255,.2);border-radius:20px;padding:6px 12px;font-size:14px;font-weight:700;color:#fff;white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis;}
   .admin-icon-btn{background:rgba(255,255,255,.15);border:none;border-radius:10px;padding:7px 11px;font-size:19px;cursor:pointer;color:#fff;}
   .admin-icon-btn.active{background:var(--accent);}
   .tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
@@ -75,11 +60,33 @@
   .section-title::before{content:'';display:block;width:5px;height:28px;background:var(--primary);border-radius:3px;}
   .notice-info{border-radius:12px;padding:14px 16px;font-size:15px;font-weight:700;margin-bottom:16px;}
 
-  /* ── SCHEDULE ── */
-  .schedule-month{font-size:18px;font-weight:900;color:var(--primary);margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--primary-light);}
-  .schedule-month:first-child{margin-top:0;}
-  .sch-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:4px;border:1px solid var(--border);}
-  .schedule-item{display:flex;gap:14px;align-items:flex-start;padding:14px;border-bottom:1px solid var(--border);}
+  /* ── SCHEDULE 아코디언 ── */
+  .accordion-month{margin-bottom:10px;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm);}
+  .accordion-header{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--primary);color:#fff;
+    padding:14px 18px;cursor:pointer;
+    font-size:18px;font-weight:900;
+    user-select:none;-webkit-user-select:none;
+    transition:background .2s;
+  }
+  .accordion-header:hover{background:var(--primary-dark);}
+  .accordion-header .month-left{display:flex;align-items:center;gap:10px;}
+  .accordion-header .event-count{
+    background:rgba(255,255,255,.25);
+    border-radius:20px;padding:2px 10px;
+    font-size:13px;font-weight:700;
+  }
+  .accordion-arrow{font-size:16px;transition:transform .3s;flex-shrink:0;}
+  .accordion-arrow.open{transform:rotate(180deg);}
+  .accordion-body{
+    background:#fff;border:1px solid var(--border);border-top:none;
+    border-radius:0 0 16px 16px;
+    max-height:0;overflow:hidden;
+    transition:max-height .35s ease;
+  }
+  .accordion-body.open{max-height:2000px;}
+  .schedule-item{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-bottom:1px solid var(--border);}
   .schedule-item:last-child{border-bottom:none;}
   .schedule-date{min-width:58px;text-align:center;background:var(--primary-light);border-radius:10px;padding:6px 4px;flex-shrink:0;}
   .s-month{font-size:11px;color:var(--primary);font-weight:700;}
@@ -160,6 +167,8 @@
   .reply-body{font-size:16px;color:var(--text);margin-top:3px;line-height:1.5;word-break:break-all;}
   .reply-time{font-size:12px;color:var(--text-light);margin-top:2px;}
 
+
+
   /* ── MODAL ── */
   .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center;}
   .modal-overlay.open{display:flex;}
@@ -182,6 +191,7 @@
   .author-toggle{display:flex;gap:10px;margin-bottom:12px;}
   .atoggle-btn{flex:1;padding:12px;border:2px solid var(--border);border-radius:12px;background:var(--bg);font-family:inherit;font-size:17px;font-weight:700;color:var(--text-sub);cursor:pointer;text-align:center;}
   .atoggle-btn.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary);}
+
   .edit-fab{position:fixed;bottom:28px;right:20px;background:var(--accent);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-family:inherit;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(245,166,35,.4);display:none;z-index:90;align-items:center;gap:8px;}
   .edit-fab.show{display:flex;}
   .edit-section{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:2px solid #ffe0a0;}
@@ -204,20 +214,6 @@
   <div class="loading-spinner"></div>
 </div>
 
-<!-- 로그인 -->
-<div class="login-screen hidden" id="login-screen">
-  <div class="login-logo">🏫</div>
-  <div class="login-school">춘천계성학교</div>
-  <div class="login-sub">학부모회 커뮤니티</div>
-  <div class="login-box">
-    <h2>👋 처음 오셨나요?</h2>
-    <p>이름을 입력하시면 바로 시작합니다.<br>다음부터는 자동으로 로그인됩니다.</p>
-    <div class="login-err-msg" id="login-err">이름을 입력해 주세요.</div>
-    <input type="text" class="login-input" id="login-name-input" placeholder="이름 입력 (예: 홍길동)" maxlength="20" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">✅ 시작하기</button>
-  </div>
-</div>
-
 <!-- 앱 -->
 <div id="app" style="display:none;">
   <div class="app-header">
@@ -225,7 +221,6 @@
       <div class="school-logo">🏫</div>
       <div class="school-title"><h1>춘천계성학교</h1><p>학부모회 커뮤니티</p></div>
       <div class="header-right">
-        <span class="user-chip" id="user-chip"></span>
         <button class="admin-icon-btn" id="admin-toggle-btn" onclick="toggleAdminMode()">⚙️</button>
       </div>
     </div>
@@ -239,18 +234,21 @@
   </div>
   <div class="admin-banner" id="admin-banner">🔧 관리자 모드 — ✏️ 편집 버튼으로 수정하세요</div>
 
+  <!-- 학사일정 -->
   <div class="page active" id="page-schedule">
     <div class="section-title">2026년 학사 일정</div>
     <div id="schedule-view"></div>
-    <div class="notice-info" style="background:var(--primary-light);border:1px solid var(--primary);color:var(--primary);">📌 일정은 학교 사정에 따라 변경될 수 있습니다.</div>
+    <div class="notice-info" style="background:var(--primary-light);border:1px solid var(--primary);color:var(--primary);margin-top:8px;">📌 일정은 학교 사정에 따라 변경될 수 있습니다.</div>
   </div>
 
+  <!-- 임원진 -->
   <div class="page" id="page-officers">
     <div class="section-title">학부모회 임원진</div>
     <div id="officers-view"></div>
     <div class="notice-info" style="background:var(--primary-light);border:1px solid var(--primary);color:var(--primary);">📌 임원진 정보 수정은 학부모회장에게 문의해 주세요.</div>
   </div>
 
+  <!-- 학부모 명단 -->
   <div class="page" id="page-members">
     <div class="member-header">
       <div class="section-title" style="margin:0;">학부모 명단 <span class="count-badge" id="member-count">0</span></div>
@@ -274,6 +272,7 @@
     <div id="members-list"></div>
   </div>
 
+  <!-- 공지 게시판 -->
   <div class="page" id="page-notice">
     <div class="section-title">📢 공지 게시판</div>
     <div class="notice-info" style="background:var(--purple-light);border:1px solid #c5b3ff;color:#5e35b1;">📌 임원진만 글을 작성할 수 있습니다.</div>
@@ -281,9 +280,12 @@
     <div id="notice-list"></div>
   </div>
 
+  <!-- 의견 게시판 -->
   <div class="page" id="page-board">
     <div class="section-title">💬 의견 게시판</div>
-    <div class="notice-info" style="background:#f0f8ff;border:1px solid #aad4f5;color:#1a5f8a;" id="board-info-banner"></div>
+    <div class="notice-info" style="background:#f0f8ff;border:1px solid #aad4f5;color:#1a5f8a;">
+      💡 닉네임(이름) 또는 익명으로 의견을 남길 수 있습니다.
+    </div>
     <button class="board-write-btn btn-blue" onclick="openBoardModal()">✏️ 의견 쓰기</button>
     <div id="board-list"></div>
   </div>
@@ -339,10 +341,13 @@
   <div class="modal">
     <div class="modal-title blue"><span>✏️ 의견 쓰기</span><button class="close-btn" onclick="closeBoardModal()">✕</button></div>
     <div class="form-group">
-      <label class="form-label">작성 방식</label>
-      <div class="author-toggle">
-        <button type="button" class="atoggle-btn active" id="toggle-named" onclick="setPostMode('named')">👤 <span id="toggle-named-label">내 이름</span></button>
-        <button type="button" class="atoggle-btn" id="toggle-anon" onclick="setPostMode('anon')">🔒 익명</button>
+      <label class="form-label">작성 방식 <span class="req">*</span></label>
+      <div class="author-toggle" style="margin-bottom:12px;">
+        <button type="button" class="atoggle-btn active" id="toggle-named" onclick="setPostMode('named')">👤 내 이름으로</button>
+        <button type="button" class="atoggle-btn" id="toggle-anon" onclick="setPostMode('anon')">🔒 익명으로</button>
+      </div>
+      <div id="post-name-row">
+        <input type="text" class="form-input" id="post-nickname-input" placeholder="이름 또는 닉네임 입력" maxlength="15">
       </div>
     </div>
     <div class="form-group"><label class="form-label">내용 <span class="req">*</span></label><textarea class="form-input" id="board-content-input" placeholder="자유롭게 의견을 남겨주세요." rows="5"></textarea></div>
@@ -355,10 +360,13 @@
   <div class="modal">
     <div class="modal-title blue"><span>💬 댓글 달기</span><button class="close-btn" onclick="closeReplyModal()">✕</button></div>
     <div class="form-group">
-      <label class="form-label">작성 방식</label>
-      <div class="author-toggle">
-        <button type="button" class="atoggle-btn active" id="reply-toggle-named" onclick="setReplyMode('named')">👤 <span id="reply-toggle-named-label">내 이름</span></button>
-        <button type="button" class="atoggle-btn" id="reply-toggle-anon" onclick="setReplyMode('anon')">🔒 익명</button>
+      <label class="form-label">작성 방식 <span class="req">*</span></label>
+      <div class="author-toggle" style="margin-bottom:12px;">
+        <button type="button" class="atoggle-btn active" id="reply-toggle-named" onclick="setReplyMode('named')">👤 내 이름으로</button>
+        <button type="button" class="atoggle-btn" id="reply-toggle-anon" onclick="setReplyMode('anon')">🔒 익명으로</button>
+      </div>
+      <div id="reply-name-row">
+        <input type="text" class="form-input" id="reply-nickname-input" placeholder="이름 또는 닉네임 입력" maxlength="15">
       </div>
     </div>
     <div class="form-group"><label class="form-label">댓글 내용 <span class="req">*</span></label><textarea class="form-input" id="reply-content-input" placeholder="댓글을 입력하세요." rows="3"></textarea></div>
@@ -374,7 +382,7 @@
 
 <script>
 // ══════════════════════════════════
-//  ★★★ 여기에 Supabase 정보 입력 ★★★
+//  ★★★ Supabase 정보 ★★★
 // ══════════════════════════════════
 const SUPABASE_URL  = 'https://njrbqfyxxwobthzrhqzm.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5qcmJxZnl4eHdvYnRoenJocXptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NDkxODUsImV4cCI6MjA4OTUyNTE4NX0.8lw0F6jzaMHlBqaiHoEtywLsANdcQDLJVCqiSdwPFMg';
@@ -382,8 +390,8 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 // ══════════════════════════════════
 //  설정
 // ══════════════════════════════════
-const ADMIN_PW = '1234';   // ← 관리자 비밀번호 변경 가능
-const USER_KEY = 'gyeseong_username';
+const ADMIN_PW      = '1234';
+const NICKNAME_KEY  = 'gyeseong_nickname';
 
 // ══════════════════════════════════
 //  기본 데이터
@@ -420,27 +428,28 @@ const DEFAULT_OFFICERS = [
 // ══════════════════════════════════
 //  상태
 // ══════════════════════════════════
-let sb; // supabase client
+let sb;
 let isAdmin=false, currentPage='schedule', currentFilter='all', selectedSchoolType='';
-let postMode='named', replyMode='named', loginName='';
+let postMode='named', replyMode='named';
 let scheduleData=[], officersData=[], members=[], noticePosts=[], boardPosts=[];
 const expandedN = new Set();
+// 아코디언 열린 달 목록
+const openMonths = new Set();
 
 // ══════════════════════════════════
-//  초기화
+//  닉네임 관리
+// ══════════════════════════════════
+function getNickname() {
+  return localStorage.getItem(NICKNAME_KEY) || '';
+}
+
+// ══════════════════════════════════
+//  초기화 (로그인 없이 바로 시작)
 // ══════════════════════════════════
 window.addEventListener('load', () => {
   try {
     sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    const saved = localStorage.getItem(USER_KEY);
-    if (saved && saved.trim()) {
-      loginName = saved.trim();
-      startApp();
-    } else {
-      document.getElementById('loading-screen').classList.add('hidden');
-      document.getElementById('login-screen').classList.remove('hidden');
-      setTimeout(() => document.getElementById('login-name-input').focus(), 300);
-    }
+    startApp();
   } catch(e) {
     document.getElementById('loading-screen').innerHTML =
       `<div class="loading-logo">⚠️</div>
@@ -448,22 +457,7 @@ window.addEventListener('load', () => {
   }
 });
 
-function doLogin() {
-  const name = document.getElementById('login-name-input').value.trim();
-  if (!name) { document.getElementById('login-err').style.display='block'; return; }
-  localStorage.setItem(USER_KEY, name);
-  loginName = name;
-  document.getElementById('login-screen').classList.add('hidden');
-  document.getElementById('loading-screen').classList.remove('hidden');
-  startApp();
-}
-
 async function startApp() {
-  document.getElementById('user-chip').textContent = '👤 ' + loginName;
-  document.getElementById('toggle-named-label').textContent = loginName;
-  document.getElementById('reply-toggle-named-label').textContent = loginName;
-  document.getElementById('board-info-banner').textContent =
-    '✏️ ' + loginName + '님으로 작성하거나, 익명으로 남길 수 있습니다.';
   await loadAll();
   document.getElementById('loading-screen').classList.add('hidden');
   document.getElementById('app').style.display = 'block';
@@ -476,7 +470,6 @@ async function startApp() {
 async function loadAll() {
   await Promise.all([loadConfig(), loadMembers(), loadNotices(), loadBoard()]);
 }
-
 async function loadConfig() {
   const { data } = await sb.from('config').select('*');
   if (!data) return;
@@ -486,19 +479,16 @@ async function loadConfig() {
   officersData = off ? off.value : DEFAULT_OFFICERS;
   renderSchedule(); renderOfficers();
 }
-
 async function loadMembers() {
   const { data } = await sb.from('members').select('*').order('created_at', {ascending:false});
   members = data || [];
   renderMembers();
 }
-
 async function loadNotices() {
   const { data } = await sb.from('notices').select('*').order('created_at', {ascending:false});
   noticePosts = data || [];
   renderNoticeBoard();
 }
-
 async function loadBoard() {
   const { data } = await sb.from('board').select('*').order('created_at', {ascending:false});
   boardPosts = data || [];
@@ -561,27 +551,92 @@ function checkAdminPw() {
     document.getElementById('admin-pw-input').value = '';
   }
 }
-function closeAdminLogin()       { document.getElementById('admin-login-modal').classList.remove('open'); }
-function closeAdminLoginOL(e)    { if(e.target===e.currentTarget) closeAdminLogin(); }
+function closeAdminLogin()    { document.getElementById('admin-login-modal').classList.remove('open'); }
+function closeAdminLoginOL(e) { if(e.target===e.currentTarget) closeAdminLogin(); }
 
 // ══════════════════════════════════
-//  렌더: 학사일정
+//  렌더: 학사일정 (아코디언)
 // ══════════════════════════════════
+function toggleMonth(month) {
+  if (openMonths.has(month)) {
+    openMonths.delete(month);
+  } else {
+    openMonths.add(month);
+  }
+  // body 직접 토글 (리렌더 없이)
+  const bodyEl  = document.getElementById('acc-body-'+CSS.escape(month));
+  const arrowEl = document.getElementById('acc-arrow-'+CSS.escape(month));
+  if (!bodyEl) return;
+  if (openMonths.has(month)) {
+    bodyEl.classList.add('open');
+    arrowEl.classList.add('open');
+  } else {
+    bodyEl.classList.remove('open');
+    arrowEl.classList.remove('open');
+  }
+}
+
 function renderSchedule() {
-  const bc = {blue:'badge-blue',yellow:'badge-yellow',green:'badge-green',red:'badge-red'};
-  const months = [...new Set(scheduleData.map(s=>s.month))];
+  const bc = {blue:'badge-blue', yellow:'badge-yellow', green:'badge-green', red:'badge-red'};
+  const months = [...new Set(scheduleData.map(s => s.month))];
+
+  // 현재 달 자동 열기 (초기 렌더 시)
+  const nowMonth = new Date().getMonth() + 1;
+  const nowMonthStr = nowMonth + '월';
+  if (months.includes(nowMonthStr) && openMonths.size === 0) {
+    openMonths.add(nowMonthStr);
+  }
+
   let html = '';
   months.forEach(m => {
-    html += `<div class="schedule-month">${m}</div><div class="sch-card">`;
-    scheduleData.filter(s=>s.month===m).forEach(s => {
-      html += `<div class="schedule-item">
-        <div class="schedule-date"><div class="s-month">${s.month}</div><div class="s-day">${s.day}</div><div class="s-dow">${s.dow}</div></div>
-        <div><div class="s-title">${s.title}</div><div class="s-desc">${s.desc}</div><span class="badge ${bc[s.bt]||'badge-blue'}">${s.badge}</span></div>
+    const items = scheduleData.filter(s => s.month === m);
+    const isOpen = openMonths.has(m);
+    const safeId = m.replace(/[^a-zA-Z0-9가-힣]/g, '_');
+    html += `
+      <div class="accordion-month">
+        <div class="accordion-header" onclick="toggleMonth('${m}')">
+          <div class="month-left">
+            <span>📅 ${m}</span>
+            <span class="event-count">${items.length}개</span>
+          </div>
+          <span class="accordion-arrow${isOpen?' open':''}" id="acc-arrow-${safeId}">▼</span>
+        </div>
+        <div class="accordion-body${isOpen?' open':''}" id="acc-body-${safeId}">
+          ${items.map(s => `
+            <div class="schedule-item">
+              <div class="schedule-date">
+                <div class="s-month">${s.month}</div>
+                <div class="s-day">${s.day}</div>
+                <div class="s-dow">${s.dow}</div>
+              </div>
+              <div>
+                <div class="s-title">${s.title}</div>
+                <div class="s-desc">${s.desc}</div>
+                <span class="badge ${bc[s.bt]||'badge-blue'}">${s.badge}</span>
+              </div>
+            </div>`).join('')}
+        </div>
       </div>`;
-    });
-    html += '</div>';
   });
   document.getElementById('schedule-view').innerHTML = html;
+}
+
+// toggleMonth 에서 CSS.escape 사용하지 않고 safeId 사용하도록 수정
+// (위 HTML id와 onclick 인자를 맞추기 위해 재정의)
+function toggleMonth(month) {
+  if (openMonths.has(month)) openMonths.delete(month);
+  else openMonths.add(month);
+  const safeId = month.replace(/[^a-zA-Z0-9가-힣]/g, '_');
+  const bodyEl  = document.getElementById('acc-body-'+safeId);
+  const arrowEl = document.getElementById('acc-arrow-'+safeId);
+  if (!bodyEl) return;
+  if (openMonths.has(month)) {
+    bodyEl.classList.add('open');
+    arrowEl.classList.add('open');
+  } else {
+    bodyEl.classList.remove('open');
+    arrowEl.classList.remove('open');
+  }
 }
 
 // ══════════════════════════════════
@@ -591,7 +646,11 @@ function renderOfficers() {
   document.getElementById('officers-view').innerHTML = officersData.map(o => `
     <div class="officer-card">
       <div class="officer-avatar">${o.emoji}</div>
-      <div class="officer-info"><span class="role">${o.role}</span><div class="name">${o.name}</div><div class="contact">${o.contact}</div></div>
+      <div class="officer-info">
+        <span class="role">${o.role}</span>
+        <div class="name">${o.name}</div>
+        <div class="contact">${o.contact}</div>
+      </div>
       ${o.contact ? `<button class="call-btn" onclick="callNumber('${o.contact}')">📞</button>` : ''}
     </div>`).join('');
 }
@@ -599,16 +658,21 @@ function renderOfficers() {
 // ══════════════════════════════════
 //  공지 게시판
 // ══════════════════════════════════
-function openNoticeModal()       { document.getElementById('notice-title-input').value=''; document.getElementById('notice-content-input').value=''; document.getElementById('notice-modal').classList.add('open'); setTimeout(()=>document.getElementById('notice-title-input').focus(),200); }
-function closeNoticeModal()      { document.getElementById('notice-modal').classList.remove('open'); }
-function closeNoticeModalOL(e)   { if(e.target===e.currentTarget) closeNoticeModal(); }
+function openNoticeModal() {
+  document.getElementById('notice-title-input').value='';
+  document.getElementById('notice-content-input').value='';
+  document.getElementById('notice-modal').classList.add('open');
+  setTimeout(() => document.getElementById('notice-title-input').focus(), 200);
+}
+function closeNoticeModal()    { document.getElementById('notice-modal').classList.remove('open'); }
+function closeNoticeModalOL(e) { if(e.target===e.currentTarget) closeNoticeModal(); }
 
 async function submitNotice() {
   const title   = document.getElementById('notice-title-input').value.trim();
   const content = document.getElementById('notice-content-input').value.trim();
   if (!title)   { alert('제목을 입력해 주세요.'); return; }
   if (!content) { alert('내용을 입력해 주세요.'); return; }
-  await sb.from('notices').insert({author:loginName, title, content});
+  await sb.from('notices').insert({author:'관리자', title, content});
   closeNoticeModal();
 }
 async function deleteNotice(id) {
@@ -620,7 +684,10 @@ function toggleExpand(id) { expandedN.has(id)?expandedN.delete(id):expandedN.add
 function renderNoticeBoard() {
   const list = document.getElementById('notice-list');
   if (!list) return;
-  if (!noticePosts.length) { list.innerHTML=`<div class="empty-state"><div class="icon">📢</div><p>등록된 공지가 없습니다.</p></div>`; return; }
+  if (!noticePosts.length) {
+    list.innerHTML=`<div class="empty-state"><div class="icon">📢</div><p>등록된 공지가 없습니다.</p></div>`;
+    return;
+  }
   list.innerHTML = noticePosts.map(p => {
     const exp   = expandedN.has(p.id);
     const lines = (p.content||'').split('\n');
@@ -644,59 +711,96 @@ function renderNoticeBoard() {
 // ══════════════════════════════════
 //  의견 게시판
 // ══════════════════════════════════
-function setPostMode(mode)  { postMode=mode;  document.getElementById('toggle-named').classList.toggle('active',mode==='named'); document.getElementById('toggle-anon').classList.toggle('active',mode==='anon'); }
-function setReplyMode(mode) { replyMode=mode; document.getElementById('reply-toggle-named').classList.toggle('active',mode==='named'); document.getElementById('reply-toggle-anon').classList.toggle('active',mode==='anon'); }
+function setPostMode(mode) {
+  postMode = mode;
+  document.getElementById('toggle-named').classList.toggle('active', mode==='named');
+  document.getElementById('toggle-anon').classList.toggle('active',  mode==='anon');
+  const row = document.getElementById('post-name-row');
+  row.style.display = mode==='named' ? 'block' : 'none';
+}
+function setReplyMode(mode) {
+  replyMode = mode;
+  document.getElementById('reply-toggle-named').classList.toggle('active', mode==='named');
+  document.getElementById('reply-toggle-anon').classList.toggle('active',  mode==='anon');
+  const row = document.getElementById('reply-name-row');
+  row.style.display = mode==='named' ? 'block' : 'none';
+}
 
 function openBoardModal() {
-  postMode='named';
+  postMode = 'named';
   document.getElementById('toggle-named').classList.add('active');
   document.getElementById('toggle-anon').classList.remove('active');
-  document.getElementById('board-content-input').value='';
+  document.getElementById('post-name-row').style.display = 'block';
+  document.getElementById('post-nickname-input').value = getNickname();
+  document.getElementById('board-content-input').value = '';
   document.getElementById('board-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('board-content-input').focus(),200);
+  setTimeout(() => document.getElementById('post-nickname-input').focus(), 200);
 }
-function closeBoardModal()     { document.getElementById('board-modal').classList.remove('open'); }
-function closeBoardModalOL(e)  { if(e.target===e.currentTarget) closeBoardModal(); }
+function closeBoardModal()    { document.getElementById('board-modal').classList.remove('open'); }
+function closeBoardModalOL(e) { if(e.target===e.currentTarget) closeBoardModal(); }
 
 async function submitPost() {
   const content = document.getElementById('board-content-input').value.trim();
   if (!content) { alert('내용을 입력해 주세요.'); return; }
-  const author = postMode==='named' ? {type:'named',name:loginName} : {type:'anon',name:anonName()};
-  await sb.from('board').insert({author, content, likes:[], replies:[]});
+
+  let authorName, authorType;
+  if (postMode === 'named') {
+    authorName = document.getElementById('post-nickname-input').value.trim();
+    if (!authorName) { alert('이름 또는 닉네임을 입력해 주세요.'); document.getElementById('post-nickname-input').focus(); return; }
+    localStorage.setItem(NICKNAME_KEY, authorName);
+    authorType = 'named';
+  } else {
+    authorName = anonName();
+    authorType = 'anon';
+  }
+  await sb.from('board').insert({author:{type:authorType, name:authorName}, content, likes:[], replies:[]});
   closeBoardModal();
 }
 
 function openReplyModal(postId) {
-  replyMode='named';
+  replyMode = 'named';
   document.getElementById('reply-toggle-named').classList.add('active');
   document.getElementById('reply-toggle-anon').classList.remove('active');
-  document.getElementById('reply-content-input').value='';
-  document.getElementById('reply-target-id').value=postId;
+  document.getElementById('reply-name-row').style.display = 'block';
+  document.getElementById('reply-nickname-input').value = getNickname();
+  document.getElementById('reply-content-input').value = '';
+  document.getElementById('reply-target-id').value = postId;
   document.getElementById('reply-modal').classList.add('open');
-  setTimeout(()=>document.getElementById('reply-content-input').focus(),200);
+  setTimeout(() => document.getElementById('reply-nickname-input').focus(), 200);
 }
-function closeReplyModal()     { document.getElementById('reply-modal').classList.remove('open'); }
-function closeReplyModalOL(e)  { if(e.target===e.currentTarget) closeReplyModal(); }
+function closeReplyModal()    { document.getElementById('reply-modal').classList.remove('open'); }
+function closeReplyModalOL(e) { if(e.target===e.currentTarget) closeReplyModal(); }
 
 async function submitReply() {
   const content = document.getElementById('reply-content-input').value.trim();
   if (!content) { alert('댓글을 입력해 주세요.'); return; }
+
+  let authorName, authorType;
+  if (replyMode === 'named') {
+    authorName = document.getElementById('reply-nickname-input').value.trim();
+    if (!authorName) { alert('이름 또는 닉네임을 입력해 주세요.'); document.getElementById('reply-nickname-input').focus(); return; }
+    localStorage.setItem(NICKNAME_KEY, authorName);
+    authorType = 'named';
+  } else {
+    authorName = anonName();
+    authorType = 'anon';
+  }
+
   const postId = parseInt(document.getElementById('reply-target-id').value);
-  const post   = boardPosts.find(p=>p.id===postId);
+  const post   = boardPosts.find(p => p.id === postId);
   if (!post) return;
-  const author  = replyMode==='named' ? {type:'named',name:loginName} : {type:'anon',name:anonName()};
-  const replies = [...(post.replies||[]), {id:Date.now()+'', author, content, createdAt:fmtDate()}];
+  const replies = [...(post.replies||[]), {id:Date.now()+'', author:{type:authorType,name:authorName}, content, createdAt:fmtDate()}];
   await sb.from('board').update({replies}).eq('id', postId);
   closeReplyModal();
 }
 
 async function toggleLike(postId) {
-  const post = boardPosts.find(p=>p.id===postId);
+  const post = boardPosts.find(p => p.id === postId);
   if (!post) return;
   const key = 'like_'+postId;
   const uid = sessionStorage.getItem(key);
   let likes = [...(post.likes||[])];
-  if (uid) { likes=likes.filter(l=>l!==uid); sessionStorage.removeItem(key); }
+  if (uid) { likes = likes.filter(l => l!==uid); sessionStorage.removeItem(key); }
   else     { const id2=Date.now()+''; likes.push(id2); sessionStorage.setItem(key,id2); }
   await sb.from('board').update({likes}).eq('id', postId);
 }
@@ -705,22 +809,25 @@ async function deletePost(id) {
   await sb.from('board').delete().eq('id', id);
 }
 async function deleteReply(postId, replyId) {
-  const post = boardPosts.find(p=>p.id===postId);
+  const post = boardPosts.find(p => p.id === postId);
   if (!post) return;
-  const replies = (post.replies||[]).filter(r=>r.id!==replyId);
+  const replies = (post.replies||[]).filter(r => r.id !== replyId);
   await sb.from('board').update({replies}).eq('id', postId);
 }
 
 function renderBoard() {
   const list = document.getElementById('board-list');
   if (!list) return;
-  if (!boardPosts.length) { list.innerHTML=`<div class="empty-state"><div class="icon">💬</div><p>아직 게시글이 없습니다.<br>첫 번째 의견을 남겨보세요!</p></div>`; return; }
+  if (!boardPosts.length) {
+    list.innerHTML=`<div class="empty-state"><div class="icon">💬</div><p>아직 게시글이 없습니다.<br>첫 번째 의견을 남겨보세요!</p></div>`;
+    return;
+  }
   list.innerHTML = boardPosts.map(p => {
     const liked     = sessionStorage.getItem('like_'+p.id);
     const likeCount = (p.likes||[]).length;
-    const isNamed   = p.author?.type==='named';
+    const isNamed   = p.author?.type === 'named';
     const ts        = p.created_at ? new Date(p.created_at).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
-    const replies   = (p.replies||[]).map(r=>`
+    const replies   = (p.replies||[]).map(r => `
       <div class="reply-item">
         <div style="display:flex;justify-content:space-between;align-items:center;">
           <span class="reply-author-chip ${r.author?.type==='named'?'reply-chip-named':'reply-chip-anon'}">↳ ${r.author?.name||'익명'}</span>
@@ -750,8 +857,8 @@ function renderBoard() {
 // ══════════════════════════════════
 function openEditModal() {
   const mc = document.getElementById('edit-modal-content');
-  if (currentPage==='schedule') mc.innerHTML=buildSchEditor();
-  if (currentPage==='officers') mc.innerHTML=buildOffEditor();
+  if (currentPage==='schedule') mc.innerHTML = buildSchEditor();
+  if (currentPage==='officers') mc.innerHTML = buildOffEditor();
   document.getElementById('edit-modal-overlay').classList.add('open');
 }
 function closeEditModal()    { document.getElementById('edit-modal-overlay').classList.remove('open'); }
@@ -764,8 +871,8 @@ function buildSchEditor() {
     <div style="background:#fafafa;border-radius:10px;padding:12px;margin-bottom:10px;">
       <div class="edit-row">
         <input class="form-input" style="flex:0 0 70px;font-size:15px;padding:9px 8px;" value="${s.month}" id="sm-${i}">
-        <input class="form-input" style="flex:0 0 50px;font-size:15px;padding:9px 6px;" value="${s.day}" id="sd-${i}">
-        <input class="form-input" style="flex:0 0 46px;font-size:15px;padding:9px 5px;" value="${s.dow}" id="sw-${i}">
+        <input class="form-input" style="flex:0 0 50px;font-size:15px;padding:9px 6px;" value="${s.day}"   id="sd-${i}">
+        <input class="form-input" style="flex:0 0 46px;font-size:15px;padding:9px 5px;" value="${s.dow}"   id="sw-${i}">
         <button class="del-row-btn" onclick="rmSch(${i})">🗑</button>
       </div>
       <div class="edit-row"><input class="form-input" style="font-size:15px;padding:9px;" value="${s.title}" id="st-${i}"></div>
@@ -783,11 +890,14 @@ function buildSchEditor() {
 function rmSch(i)  { scheduleData.splice(i,1); document.getElementById('edit-modal-content').innerHTML=buildSchEditor(); }
 function addSch()  { scheduleData.push({month:'',day:'',dow:'',title:'',desc:'',badge:'행사',bt:'blue'}); document.getElementById('edit-modal-content').innerHTML=buildSchEditor(); document.getElementById('edit-modal-content').scrollTop=9999; }
 async function saveSch() {
-  scheduleData = scheduleData.map((_,i)=>({
-    month:document.getElementById(`sm-${i}`).value.trim(), day:document.getElementById(`sd-${i}`).value.trim(),
-    dow:document.getElementById(`sw-${i}`).value.trim(),   title:document.getElementById(`st-${i}`).value.trim(),
-    desc:document.getElementById(`sde-${i}`).value.trim(), badge:document.getElementById(`sb-${i}`).value.trim(),
-    bt:document.getElementById(`sbt-${i}`).value,
+  scheduleData = scheduleData.map((_,i) => ({
+    month: document.getElementById(`sm-${i}`).value.trim(),
+    day:   document.getElementById(`sd-${i}`).value.trim(),
+    dow:   document.getElementById(`sw-${i}`).value.trim(),
+    title: document.getElementById(`st-${i}`).value.trim(),
+    desc:  document.getElementById(`sde-${i}`).value.trim(),
+    badge: document.getElementById(`sb-${i}`).value.trim(),
+    bt:    document.getElementById(`sbt-${i}`).value,
   }));
   await sb.from('config').upsert({key:'schedule', value:scheduleData});
   renderSchedule(); closeEditModal(); alert('✅ 학사일정이 저장되었습니다!');
@@ -795,7 +905,7 @@ async function saveSch() {
 
 function buildOffEditor() {
   const emojis=['👑','🌟','📋','🏅','🎖️','💼','📢','🎗️'];
-  const rows = officersData.map((o,i)=>`
+  const rows = officersData.map((o,i) => `
     <div class="edit-section" style="margin-bottom:10px;">
       <div class="edit-row">
         <select class="form-input" style="flex:0 0 68px;font-size:18px;padding:9px 4px;text-align:center;" id="oe-${i}">${emojis.map(e=>`<option value="${e}"${e===o.emoji?' selected':''}>${e}</option>`).join('')}</select>
@@ -803,7 +913,7 @@ function buildOffEditor() {
         <button class="del-row-btn" onclick="rmOff(${i})">🗑</button>
       </div>
       <div class="edit-row">
-        <input class="form-input" style="font-size:15px;padding:9px;" value="${o.name}" id="on-${i}">
+        <input class="form-input" style="font-size:15px;padding:9px;" value="${o.name}"    id="on-${i}">
         <input class="form-input" style="font-size:15px;padding:9px;" value="${o.contact}" id="oc-${i}" oninput="formatPhone(this)" maxlength="13">
       </div>
     </div>`).join('');
@@ -815,9 +925,11 @@ function buildOffEditor() {
 function rmOff(i) { officersData.splice(i,1); document.getElementById('edit-modal-content').innerHTML=buildOffEditor(); }
 function addOff() { officersData.push({emoji:'🌟',role:'',name:'',contact:''}); document.getElementById('edit-modal-content').innerHTML=buildOffEditor(); document.getElementById('edit-modal-content').scrollTop=9999; }
 async function saveOff() {
-  officersData = officersData.map((_,i)=>({
-    emoji:document.getElementById(`oe-${i}`).value, role:document.getElementById(`or-${i}`).value.trim(),
-    name:document.getElementById(`on-${i}`).value.trim(), contact:document.getElementById(`oc-${i}`).value.trim(),
+  officersData = officersData.map((_,i) => ({
+    emoji:   document.getElementById(`oe-${i}`).value,
+    role:    document.getElementById(`or-${i}`).value.trim(),
+    name:    document.getElementById(`on-${i}`).value.trim(),
+    contact: document.getElementById(`oc-${i}`).value.trim(),
   }));
   await sb.from('config').upsert({key:'officers', value:officersData});
   renderOfficers(); closeEditModal(); alert('✅ 임원진 정보가 저장되었습니다!');
@@ -831,49 +943,52 @@ function openMemberModal()     { document.getElementById('member-modal').classLi
 function closeMemberModal()    { document.getElementById('member-modal').classList.remove('open'); clearMemberForm(); }
 function closeMemberModalOL(e) { if(e.target===e.currentTarget) closeMemberModal(); }
 function clearMemberForm() {
-  ['input-child','input-guardian','input-contact'].forEach(id=>document.getElementById(id).value='');
+  ['input-child','input-guardian','input-contact'].forEach(id => document.getElementById(id).value='');
   document.getElementById('input-grade').value='';
-  document.querySelectorAll('.school-type-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.school-type-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('grade-num-row').style.display='none';
   document.getElementById('grade-num-row').innerHTML='';
   selectedSchoolType='';
 }
 function selectSchoolType(type,btn) {
   selectedSchoolType=type;
-  document.querySelectorAll('.school-type-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.school-type-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const nr=document.getElementById('grade-num-row');
-  nr.innerHTML=Array.from({length:{초:6,중:3,고:3}[type]},(_,i)=>i+1)
+  const nr = document.getElementById('grade-num-row');
+  nr.innerHTML = Array.from({length:{초:6,중:3,고:3}[type]},(_,i)=>i+1)
     .map(n=>`<button type="button" class="grade-num-btn" onclick="selectGradeNum('${type}${n}',this)">${n}학년</button>`).join('');
   nr.style.display='flex';
   document.getElementById('input-grade').value='';
 }
 function selectGradeNum(grade,btn) {
-  document.querySelectorAll('.grade-num-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.grade-num-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('input-grade').value=grade;
 }
 async function addMember() {
-  const child=document.getElementById('input-child').value.trim();
-  const grade=document.getElementById('input-grade').value;
-  const guardian=document.getElementById('input-guardian').value.trim();
-  const contact=document.getElementById('input-contact').value.trim();
-  if(!child)    { alert('아이 이름을 입력해 주세요.'); return; }
-  if(!grade)    { alert('학년을 선택해 주세요.'); return; }
-  if(!guardian) { alert('보호자 이름을 입력해 주세요.'); return; }
-  await sb.from('members').insert({child, grade, guardian, contact, added_by:loginName});
+  const child    = document.getElementById('input-child').value.trim();
+  const grade    = document.getElementById('input-grade').value;
+  const guardian = document.getElementById('input-guardian').value.trim();
+  const contact  = document.getElementById('input-contact').value.trim();
+  if (!child)    { alert('아이 이름을 입력해 주세요.'); return; }
+  if (!grade)    { alert('학년을 선택해 주세요.'); return; }
+  if (!guardian) { alert('보호자 이름을 입력해 주세요.'); return; }
+  await sb.from('members').insert({child, grade, guardian, contact, added_by: getNickname()||'방문자'});
   closeMemberModal();
 }
 async function deleteMember(id) {
-  if(!confirm('이 항목을 삭제할까요?')) return;
+  if (!confirm('이 항목을 삭제할까요?')) return;
   await sb.from('members').delete().eq('id', id);
 }
 function renderMembers() {
-  const list=document.getElementById('members-list');
-  const filtered=currentFilter==='all'?members:members.filter(m=>m.grade===currentFilter);
-  document.getElementById('member-count').textContent=members.length;
-  if(!filtered.length){list.innerHTML=`<div class="empty-state"><div class="icon">👨‍👩‍👧</div><p>${currentFilter==='all'?'등록된 학부모가 없습니다.<br>➕ 추가 버튼을 눌러 등록하세요.':'해당 학년의 학부모가 없습니다.'}</p></div>`;return;}
-  list.innerHTML=filtered.map(m=>`
+  const list = document.getElementById('members-list');
+  const filtered = currentFilter==='all' ? members : members.filter(m => m.grade===currentFilter);
+  document.getElementById('member-count').textContent = members.length;
+  if (!filtered.length) {
+    list.innerHTML=`<div class="empty-state"><div class="icon">👨‍👩‍👧</div><p>${currentFilter==='all'?'등록된 학부모가 없습니다.<br>➕ 추가 버튼을 눌러 등록하세요.':'해당 학년의 학부모가 없습니다.'}</p></div>`;
+    return;
+  }
+  list.innerHTML = filtered.map(m => `
     <div class="member-card">
       <div class="member-left">
         <div class="member-child">${m.child}<span class="grade-badge ${gradeClass(m.grade)}">${m.grade}</span></div>
@@ -889,8 +1004,9 @@ function renderMembers() {
 }
 function filterMembers(grade,btn) {
   currentFilter=grade;
-  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active'); renderMembers();
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderMembers();
 }
 
 // ══════════════════════════════════
@@ -902,8 +1018,8 @@ function anonName()  { return `익명의 ${adj[Math.floor(Math.random()*adj.leng
 function fmtDate()   { return new Date().toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}); }
 function esc(s)      { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
 function formatPhone(input) {
-  const d=input.value.replace(/\D/g,'').slice(0,11);
-  input.value=d.length<4?d:d.length<8?d.slice(0,3)+'-'+d.slice(3):d.slice(0,3)+'-'+d.slice(3,7)+'-'+d.slice(7);
+  const d = input.value.replace(/\D/g,'').slice(0,11);
+  input.value = d.length<4 ? d : d.length<8 ? d.slice(0,3)+'-'+d.slice(3) : d.slice(0,3)+'-'+d.slice(3,7)+'-'+d.slice(7);
 }
 function callNumber(num) { window.location.href='tel:'+num.replace(/[^0-9]/g,''); }
 </script>
