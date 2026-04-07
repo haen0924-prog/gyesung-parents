@@ -285,13 +285,6 @@
   <div class="modal-overlay" id="notice-reply-modal" onclick="closeNoticeReplyModalOL(event)">
     <div class="modal">
       <div class="modal-title purple"><span>💬 댓글 달기</span><button class="close-btn" onclick="closeNoticeReplyModal()">✕</button></div>
-      <div class="form-group">
-        <label class="form-label">작성 방식</label>
-        <div class="author-toggle">
-          <button type="button" class="atoggle-btn active" id="nreply-toggle-named" onclick="setNoticeReplyMode('named')">👤 <span id="nreply-toggle-named-label">내 이름</span></button>
-          <button type="button" class="atoggle-btn" id="nreply-toggle-anon" onclick="setNoticeReplyMode('anon')">🔒 익명</button>
-        </div>
-      </div>
       <div class="form-group"><label class="form-label">댓글 내용 <span class="req">*</span></label><textarea class="form-input" id="nreply-content-input" placeholder="댓글을 입력하세요." rows="3"></textarea></div>
       <input type="hidden" id="nreply-target-id">
       <button class="submit-btn btn-purple" onclick="submitNoticeReply()">💬 댓글 달기</button>
@@ -479,7 +472,6 @@ async function startApp() {
   document.getElementById('user-chip').textContent = '👤 ' + loginName;
   document.getElementById('toggle-named-label').textContent = loginName;
   document.getElementById('reply-toggle-named-label').textContent = loginName;
-  document.getElementById('nreply-toggle-named-label').textContent = loginName;
   document.getElementById('board-info-banner').textContent =
     '✏️ ' + loginName + '님으로 작성하거나, 익명으로 남길 수 있습니다.';
   await loadAll();
@@ -631,7 +623,13 @@ async function submitNotice() {
 }
 async function deleteNotice(id) {
   if (!confirm('이 공지를 삭제할까요?')) return;
-  await sb.from('notices').delete().eq('id', id);
+  const { error } = await sb.from('notices').delete().eq('id', id);
+  if (!error) {
+    noticePosts = noticePosts.filter(p => p.id !== id);
+    renderNoticeBoard();
+  } else {
+    alert('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+  }
 }
 function toggleExpand(id) { expandedN.has(id)?expandedN.delete(id):expandedN.add(id); renderNoticeBoard(); }
 
@@ -645,10 +643,6 @@ function renderNoticeBoard() {
     const need  = lines.length > 3 || (p.content||'').length > 120;
     const shown = exp||!need ? p.content : lines.slice(0,3).join('\n')+(need?'…':'');
     const ts    = p.created_at ? new Date(p.created_at).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
-    // 공감
-    const likeKey   = 'nlike_'+p.id+'_'+loginName;
-    const liked     = localStorage.getItem(likeKey);
-    const likeCount = (p.likes||[]).length;
     // 댓글
     const replyList = (p.replies||[]);
     const repliesHtml = replyList.map(r=>`
@@ -672,7 +666,6 @@ function renderNoticeBoard() {
       <div class="notice-body">${esc(shown)}</div>
       ${need?`<button class="expand-btn" onclick="toggleExpand(${p.id})">${exp?'▲ 접기':'▼ 더 보기'}</button>`:''}
       <div class="post-footer" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;">
-        <button class="like-btn${liked?' liked':''}" onclick="toggleNoticeLike(${p.id})">❤️ ${likeCount}</button>
         <button class="reply-open-btn" onclick="openNoticeReplyModal(${p.id})">💬 댓글 ${replyList.length}</button>
         ${isAdmin?`<button class="del-btn-sm" style="margin-left:auto;" onclick="deleteNotice(${p.id})">🗑 삭제</button>`:''}
       </div>
@@ -685,15 +678,8 @@ function renderNoticeBoard() {
 //  공지 공감 & 댓글
 // ══════════════════════════════════
 let noticeReplyMode = 'named';
-function setNoticeReplyMode(mode) {
-  noticeReplyMode = mode;
-  document.getElementById('nreply-toggle-named').classList.toggle('active', mode==='named');
-  document.getElementById('nreply-toggle-anon').classList.toggle('active', mode==='anon');
-}
+function setNoticeReplyMode(mode) { noticeReplyMode = mode; }
 function openNoticeReplyModal(postId) {
-  noticeReplyMode = 'named';
-  document.getElementById('nreply-toggle-named').classList.add('active');
-  document.getElementById('nreply-toggle-anon').classList.remove('active');
   document.getElementById('nreply-content-input').value = '';
   document.getElementById('nreply-target-id').value = postId;
   document.getElementById('notice-reply-modal').classList.add('open');
@@ -702,29 +688,13 @@ function openNoticeReplyModal(postId) {
 function closeNoticeReplyModal()     { document.getElementById('notice-reply-modal').classList.remove('open'); }
 function closeNoticeReplyModalOL(e)  { if(e.target===e.currentTarget) closeNoticeReplyModal(); }
 
-async function toggleNoticeLike(postId) {
-  const post = noticePosts.find(p => p.id === postId);
-  if (!post) return;
-  const likeKey = 'nlike_'+postId+'_'+loginName;
-  let likes = [...(post.likes || [])];
-  if (localStorage.getItem(likeKey)) {
-    likes = likes.filter(l => l !== loginName);
-    localStorage.removeItem(likeKey);
-  } else {
-    if (!likes.includes(loginName)) likes.push(loginName);
-    localStorage.setItem(likeKey, '1');
-  }
-  const { error } = await sb.from('notices').update({ likes }).eq('id', postId);
-  if (!error) { post.likes = likes; renderNoticeBoard(); }
-}
-
 async function submitNoticeReply() {
   const content = document.getElementById('nreply-content-input').value.trim();
   if (!content) { alert('댓글을 입력해 주세요.'); return; }
   const postId = parseInt(document.getElementById('nreply-target-id').value);
   const post   = noticePosts.find(p => p.id === postId);
   if (!post) return;
-  const author  = noticeReplyMode==='named' ? {type:'named',name:loginName} : {type:'anon',name:anonName()};
+  const author  = {type:'named', name:loginName};
   const replies = [...(post.replies||[]), {id:Date.now()+'', author, content, createdAt:fmtDate()}];
   const { error } = await sb.from('notices').update({ replies }).eq('id', postId);
   if (!error) { closeNoticeReplyModal(); }
@@ -735,7 +705,13 @@ async function deleteNoticeReply(postId, replyId) {
   const post = noticePosts.find(p => p.id === postId);
   if (!post) return;
   const replies = (post.replies||[]).filter(r => r.id !== replyId+'');
-  await sb.from('notices').update({ replies }).eq('id', postId);
+  const { error } = await sb.from('notices').update({ replies }).eq('id', postId);
+  if (!error) {
+    post.replies = replies;
+    renderNoticeBoard();
+  } else {
+    alert('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+  }
 }
 
 // ══════════════════════════════════
@@ -805,13 +781,25 @@ async function toggleLike(postId) {
 }
 async function deletePost(id) {
   if (!confirm('이 글을 삭제할까요?')) return;
-  await sb.from('board').delete().eq('id', id);
+  const { error } = await sb.from('board').delete().eq('id', id);
+  if (!error) {
+    boardPosts = boardPosts.filter(p => p.id !== id);
+    renderBoard();
+  } else {
+    alert('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+  }
 }
 async function deleteReply(postId, replyId) {
-  const post = boardPosts.find(p=>p.id===postId);
+  const post = boardPosts.find(p => p.id === postId);
   if (!post) return;
-  const replies = (post.replies||[]).filter(r=>r.id!==replyId);
-  await sb.from('board').update({replies}).eq('id', postId);
+  const replies = (post.replies||[]).filter(r => r.id !== replyId+'');
+  const { error } = await sb.from('board').update({ replies }).eq('id', postId);
+  if (!error) {
+    post.replies = replies;
+    renderBoard();
+  } else {
+    alert('삭제에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+  }
 }
 
 function renderBoard() {
