@@ -695,10 +695,18 @@ async function submitNoticeReply() {
   const post   = noticePosts.find(p => p.id === postId);
   if (!post) return;
   const author  = {type:'named', name:loginName};
-  const replies = [...(post.replies||[]), {id:Date.now()+'', author, content, createdAt:fmtDate()}];
+  const newReply = {id:Date.now()+'', author, content, createdAt:fmtDate()};
+  const replies = [...(post.replies||[]), newReply];
   const { error } = await sb.from('notices').update({ replies }).eq('id', postId);
-  if (!error) { closeNoticeReplyModal(); }
-  else { alert('댓글 저장에 실패했습니다. 잠시 후 다시 시도해 주세요.'); }
+  if (!error) {
+    post.replies = replies;
+    closeNoticeReplyModal();
+    renderNoticeBoard();
+  } else {
+    // RLS 정책 문제일 수 있으므로 에러 내용 확인
+    console.error('공지 댓글 오류:', error);
+    alert('댓글 저장에 실패했습니다.\n\nSupabase 대시보드에서\nnotices 테이블 UPDATE 정책을 확인해 주세요.');
+  }
 }
 
 async function deleteNoticeReply(postId, replyId) {
@@ -757,11 +765,18 @@ async function submitReply() {
   const postId = parseInt(document.getElementById('reply-target-id').value);
   const post   = boardPosts.find(p => p.id === postId);
   if (!post) { alert('게시글을 찾을 수 없습니다.'); return; }
-  const author  = replyMode==='named' ? {type:'named',name:loginName} : {type:'anon',name:anonName()};
-  const replies = [...(post.replies||[]), {id:Date.now()+'', author, content, createdAt:fmtDate()}];
+  const author   = replyMode==='named' ? {type:'named',name:loginName} : {type:'anon',name:anonName()};
+  const newReply = {id:Date.now()+'', author, content, createdAt:fmtDate()};
+  const replies  = [...(post.replies||[]), newReply];
   const { error } = await sb.from('board').update({ replies }).eq('id', postId);
-  if (!error) { closeReplyModal(); }
-  else { alert('댓글 저장에 실패했습니다. 잠시 후 다시 시도해 주세요.'); }
+  if (!error) {
+    post.replies = replies;
+    closeReplyModal();
+    renderBoard();
+  } else {
+    console.error('의견 댓글 오류:', error);
+    alert('댓글 저장에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+  }
 }
 
 async function toggleLike(postId) {
